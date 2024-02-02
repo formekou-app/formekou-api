@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   version: 1.0.0
-  title: Dummy API
+  title: formekou-api
 paths:
   '/dummy':
     get:
@@ -26,6 +26,8 @@ paths:
           $ref: '#/components/responses/InternalServerError'
   '/ping':
     get:
+      tags:
+        - Health
       summary: Pong
       operationId: ping
       responses:
@@ -53,7 +55,8 @@ components:
       type: object
       properties:
         id:
-          type: integer
+          type: string
+          format: uuid
         name:
           type: string
 
