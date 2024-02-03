@@ -3,5 +3,5 @@ CREATE TABLE IF NOT EXIST  "user"(
     name varchar(255) not null,
     first_name varchar(250),
     email varchar(255) not null,
-    password varchar(50)
+    password varchar(255) not null
 );
