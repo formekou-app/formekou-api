@@ -1,4 +1,4 @@
-package neocode.formekouapi.enpoint.security;
+package neocode.formekouapi.endpoint.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
