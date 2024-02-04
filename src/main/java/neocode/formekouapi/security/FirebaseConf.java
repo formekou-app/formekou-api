@@ -7,6 +7,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 
@@ -14,10 +15,11 @@ import java.io.IOException;
 public class FirebaseConf {
     @Bean
     public FirebaseAuth firebaseApp() throws IOException {
-        String firebaseConfigPath = System.getenv("FIREBASE_ACCOUNT_PATH");
-        FileInputStream serviceAccount = new FileInputStream(firebaseConfigPath);
+        String firebaseKey = System.getenv("FIREBASE_KEY");
+        var stream = new ByteArrayInputStream(firebaseKey.getBytes());
+
         FirebaseOptions options = new FirebaseOptions.Builder()
-                .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+                .setCredentials(GoogleCredentials.fromStream(stream))
                 .build();
         FirebaseApp firebaseApp = FirebaseApp.initializeApp(options);
         return FirebaseAuth.getInstance(firebaseApp);
