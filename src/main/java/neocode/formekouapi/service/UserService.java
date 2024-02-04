@@ -1,26 +1,26 @@
 package neocode.formekouapi.service;
 
 import lombok.RequiredArgsConstructor;
-import neocode.formekouapi.exception.NotFoundException;
+import neocode.formekouapi.exception.AccessDeniedException;
+import neocode.formekouapi.exception.ApiException;
 import neocode.formekouapi.model.User;
 import neocode.formekouapi.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
-//TODO: send client response instead of throwing runtime exception
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
 
-    public User getUserById(String id) {
-        return userRepository
-                .findById(id)
-                .orElseThrow(() -> new NotFoundException("User with {id: " + id+ "} is not found"));
+    public List<User> getAllUsers(){
+        return userRepository.findAll();
     }
 
-    public User getUserByEmail(String email) {
+    public User getUserById(String id){
         return userRepository
-            .findByEmail(email)
-            .orElseThrow(() -> new NotFoundException("User with {email: " + email + "} is not found"));
+                .findById(id)
+                .orElseThrow(()->new AccessDeniedException("User not found"));
     }
 }
