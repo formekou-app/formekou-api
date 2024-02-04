@@ -18,7 +18,7 @@ import java.util.List;
 @Data
 public class FirebaseAuthentication implements Authentication {
     private User user;
-    private FirebaseUser firebaseUser;
+    private String bearer;
     private boolean isRegistered;
 
     @Override
@@ -28,7 +28,7 @@ public class FirebaseAuthentication implements Authentication {
 
     @Override
     public Object getCredentials() {
-        return firebaseUser;
+        return bearer;
     }
 
     @Override

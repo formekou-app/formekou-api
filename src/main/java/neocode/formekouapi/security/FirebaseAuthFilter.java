@@ -43,8 +43,13 @@ public class FirebaseAuthFilter extends OncePerRequestFilter {
             FirebaseToken firebaseToken =  firebaseService.getFirebaseUserByToken(token);
             Optional<User> user = userService.getUserById(firebaseToken.getUid());
             FirebaseAuthentication authentication = new FirebaseAuthentication(
-                    user.orElse(null),
-                    new FirebaseUser(firebaseToken.getUid(), firebaseToken.getEmail()),
+                    user.orElse(new User(
+                            firebaseToken.getUid(),
+                            firebaseToken.getEmail(),
+                            firebaseToken.getName(),
+                            null
+                    )),
+                    token,
                     user.isPresent()
             );
 

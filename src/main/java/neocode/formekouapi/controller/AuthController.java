@@ -4,18 +4,20 @@ import lombok.RequiredArgsConstructor;
 import neocode.formekouapi.model.User;
 import neocode.formekouapi.security.FirebaseAuthentication;
 import neocode.formekouapi.service.AuthService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import neocode.formekouapi.service.UserService;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
 public class AuthController {
     private final AuthService authService;
+    private final UserService userService;
 
     @GetMapping("/whoami")
     public User whoami(FirebaseAuthentication authentication){
+        if(!authentication.isRegistered()){
+            return userService.saveOrUpdate(authentication.getUser());
+        }
         return authentication.getUser();
     }
 

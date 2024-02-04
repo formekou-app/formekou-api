@@ -13,6 +13,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
+import org.springframework.web.cors.CorsConfiguration;
 
 @Configuration
 @EnableWebSecurity
@@ -33,6 +34,11 @@ public class SecurityConf {
                 .csrf(AbstractHttpConfigurer::disable)
                 .logout(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
+                .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer
+                        .configurationSource( request ->
+                            new CorsConfiguration().applyPermitDefaultValues()
+                        )
+                )
                 //authenticated
                 .addFilterBefore(configureFilter(
                         new OrRequestMatcher(

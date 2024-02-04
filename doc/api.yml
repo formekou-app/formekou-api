@@ -2,6 +2,8 @@ openapi: 3.0.3
 info:
   version: 1.0.0
   title: formekou-api
+security:
+  - BearerAuth: []
 paths:
   '/dummy-table':
     get:
@@ -52,6 +54,10 @@ paths:
           $ref: '#/components/responses/InternalServerError'
 
 components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
   schemas:
     Dummy:
       type: object

@@ -20,11 +20,11 @@ public class AuthService {
         if(authentication.isRegistered()){
             throw new UserAlreadyExistException(
                     "User already exist with the email=" +
-                            authentication.getFirebaseUser().getEmail()
+                            authentication.getUser().getEmail()
             );
         }
-        userToSave.setId(authentication.getFirebaseUser().getUid());
-        userToSave.setEmail(authentication.getFirebaseUser().getEmail());
+        userToSave.setId(authentication.getUser().getId());
+        userToSave.setEmail(authentication.getUser().getEmail());
         return userRepository.save(userToSave);
     }
 }
