@@ -9,12 +9,7 @@ import org.springframework.stereotype.Component;
 public class FirebaseAuthProvider implements AuthenticationProvider {
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        if(!supports(authentication.getClass())){
-            //FIXME: send error to the client
-            //user not connected
-            // throw new AccessDeniedException();
-        }
-
+        //TODO: maybe do the authentication here
         return authentication;
     }
 

@@ -10,6 +10,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.OrRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -19,11 +22,8 @@ public class SecurityConf {
     private final FirebaseService firebaseService;
     private final UserService userService;
 
-    public FirebaseAuthFilter authFilter() {
-        return new FirebaseAuthFilter(
-                firebaseService,
-                userService
-        );
+    public FirebaseAuthFilter configureFilter(RequestMatcher matcher){
+        return new FirebaseAuthFilter(firebaseService, userService, matcher);
     }
 
     @Bean
@@ -33,16 +33,20 @@ public class SecurityConf {
                 .csrf(AbstractHttpConfigurer::disable)
                 .logout(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
-                //TODO: use request matcher for the filter
-                .addFilterBefore(authFilter(), UsernamePasswordAuthenticationFilter.class)
+                //authenticated
+                .addFilterBefore(configureFilter(
+                        new OrRequestMatcher(
+                                new AntPathRequestMatcher("/ping"),
+                                new AntPathRequestMatcher("/dummy-table")
+                        )),
+                        UsernamePasswordAuthenticationFilter.class
+                )
                 .authenticationProvider(firebaseAuthProvider)
                 .authorizeHttpRequests(auth-> auth
                         .requestMatchers("/ping")
                         .permitAll()
                         .requestMatchers("/dummy-table")
                         .permitAll()
-
-                        //authenticated
                         .requestMatchers("/signup")
                         .authenticated()
                         .requestMatchers("/whoami")
