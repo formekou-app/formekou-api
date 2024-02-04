@@ -43,7 +43,8 @@ public class SecurityConf {
                 .addFilterBefore(configureFilter(
                         new OrRequestMatcher(
                                 new AntPathRequestMatcher("/ping"),
-                                new AntPathRequestMatcher("/dummy-table")
+                                new AntPathRequestMatcher("/dummy-table"),
+                                new AntPathRequestMatcher("/signup")
                         )),
                         UsernamePasswordAuthenticationFilter.class
                 )
@@ -54,7 +55,7 @@ public class SecurityConf {
                         .requestMatchers("/dummy-table")
                         .permitAll()
                         .requestMatchers("/signup")
-                        .authenticated()
+                        .permitAll()
                         .requestMatchers("/whoami")
                         .authenticated()
                         .requestMatchers("/users")

@@ -6,6 +6,7 @@ import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 import java.io.Serializable;
 
@@ -18,9 +19,11 @@ public class User implements Serializable {
     @Column
     private String id;
 
+    @NonNull
     @Column(nullable = false)
     private String email;
 
+    @NonNull
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
