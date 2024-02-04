@@ -3,9 +3,11 @@ info:
   version: 1.0.0
   title: formekou-api
 paths:
-  '/dummy':
+  '/dummy-table':
     get:
-      summary: Get all dummy items
+      tags:
+        - Health
+      summary: Get all dummies
       operationId: getDummies
       responses:
         '200':
