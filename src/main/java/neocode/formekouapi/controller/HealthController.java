@@ -1,4 +1,4 @@
-package neocode.formekouapi.endpoint.controller;
+package neocode.formekouapi.controller;
 
 import lombok.RequiredArgsConstructor;
 import neocode.formekouapi.model.Dummy;
