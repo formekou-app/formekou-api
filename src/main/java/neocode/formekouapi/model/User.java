@@ -14,12 +14,12 @@ public class User implements Serializable {
     @Column
     private String id;
 
-    @Column
+    @Column(nullable = false)
     private String email;
 
-    @Column(name = "last_name")
+    @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @Column(name="first_name", nullable = true)
+    @Column(name="first_name")
     private String fistName;
 }

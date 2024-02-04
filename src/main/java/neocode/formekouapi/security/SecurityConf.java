@@ -10,8 +10,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.security.web.util.matcher.RequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -21,9 +19,8 @@ public class SecurityConf {
     private final FirebaseService firebaseService;
     private final UserService userService;
 
-    public FirebaseAuthFilter authFilter(RequestMatcher requestMatcher) {
+    public FirebaseAuthFilter authFilter() {
         return new FirebaseAuthFilter(
-                requestMatcher,
                 firebaseService,
                 userService
         );
@@ -36,20 +33,21 @@ public class SecurityConf {
                 .csrf(AbstractHttpConfigurer::disable)
                 .logout(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
+                //TODO: use request matcher for the filter
+                .addFilterBefore(authFilter(), UsernamePasswordAuthenticationFilter.class)
                 .authenticationProvider(firebaseAuthProvider)
-                .addFilterBefore(authFilter(
-                    new AntPathRequestMatcher("/users/*")
-                ), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(auth-> auth
                         .requestMatchers("/ping")
                         .permitAll()
                         .requestMatchers("/dummy-table")
                         .permitAll()
-                        .requestMatchers("/signin")
-                        .permitAll()
+
+                        //authenticated
                         .requestMatchers("/signup")
-                        .permitAll()
-                        .requestMatchers("/users/*")
+                        .authenticated()
+                        .requestMatchers("/whoami")
+                        .authenticated()
+                        .requestMatchers("/users")
                         .authenticated()
                 );
         return http.build();

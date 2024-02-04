@@ -1,4 +1,4 @@
-package neocode.formekouapi.service.model;
+package neocode.formekouapi.security;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -6,6 +6,5 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public class FirebaseUser {
-    private final String uid;
-    private final String email;
+    private String uid, email;
 }
