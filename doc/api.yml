@@ -62,7 +62,7 @@ paths:
         '200':
           description: Who you are
           content:
-            'text/plain':
+            application/json:
               schema:
                 $ref: '#/components/schemas/Whoami'
         '400':
@@ -85,7 +85,7 @@ paths:
         '200':
           description: Register a new user account.
           content:
-            'text/plain':
+            application/json:
               schema:
                 $ref: '#/components/schemas/signup'
         '400':
