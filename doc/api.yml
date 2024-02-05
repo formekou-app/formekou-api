@@ -56,7 +56,7 @@ paths:
     get:
       tags:
         - Security
-      summary: getWhoAmi
+      summary: Tell who you are using firebase token
       operationId: whoami
       responses:
         '200':
@@ -79,7 +79,7 @@ paths:
     get:
       tags:
         - Security
-      summary: getSignup
+      summary: create a account using email, lastName and password
       operationId: signup
       responses:
         '200':
