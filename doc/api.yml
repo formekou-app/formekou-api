@@ -52,6 +52,53 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
+  '/whoami':
+    get:
+      tags:
+        - Security
+      summary: getWhoAmi
+      operationId: whoami
+      responses:
+        '200':
+          description: Who you are
+          content:
+            'text/plain':
+              schema:
+                $ref: '#/components/schemas/Whoami'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  '/signup':
+    get:
+      tags:
+        - Security
+      summary: getSignup
+      operationId: signup
+      responses:
+        '200':
+          description: Register a new user account.
+          content:
+            'text/plain':
+              schema:
+                $ref: '#/components/schemas/signup'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
 
 components:
   securitySchemes:
@@ -68,6 +115,32 @@ components:
         name:
           type: string
 
+    Whoami:
+      properties:
+        id:
+          type: string
+          format: uuid
+        first_name:
+          type: string
+          example: mioratiana
+        last_name:
+          type: string
+          example: TSANTANIAINA
+        email:
+          type: string
+          example: hei.tsantaniaina@gmail.com
+    signup:
+      properties:
+        id:
+          type: string
+        last_name:
+          type: string
+          example: TSANTANIAINA
+        email:
+          type: string
+          example: hei.tsantaniana@gmail.com
+        password:
+          type: string
   responses:
     BadRequest:
       description: Bad Request
