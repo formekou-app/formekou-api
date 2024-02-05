@@ -1,0 +1,143 @@
+openapi: 3.0.3
+info:
+  version: 1.0.0
+  title: formekou-api
+security:
+  - BearerAuth: []
+paths:
+  '/dummy-table':
+    get:
+      tags:
+        - Health
+      summary: Get all dummies
+      operationId: getDummies
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dummy'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  '/ping':
+    get:
+      tags:
+        - Health
+      summary: Pong
+      operationId: ping
+      responses:
+        '200':
+          description: Pong
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: pong
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  '/whoami':
+    get:
+      summary: getWhoAmi
+      operationId: whoami
+      responses:
+        '200':
+          description: Who you are
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/Whoami'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+  schemas:
+    Dummy:
+      type: object
+      properties:
+        id:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+        email:
+          type: string
+
+    Whoami:
+      properties:
+        id:
+          type: string
+        first_name:
+          type: string
+          example: mioratiana
+        last_name:
+          type: string
+          example: TSANTANIAINA
+        email:
+          type: string
+          example: hei.tsantaniana@gmail.com
+  responses:
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          example:
+            error: "Invalid request parameters"
+
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          example:
+            error: "Access forbidden"
+
+    NotFound:
+      description: Not Found
+      content:
+        application/json:
+          example:
+            error: "Resource not found"
+
+    TooManyRequests:
+      description: Too Many Requests
+      content:
+        application/json:
+          example:
+            error: "Too many requests, please try again later"
+
+    InternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          example:
+            error: "Internal server error occurred"
