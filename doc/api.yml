@@ -2,6 +2,7 @@ openapi: 3.0.3
 info:
   version: 1.0.0
   title: formekou-api
+  description: Api that can manage forms
 security:
   - BearerAuth: []
 paths:
@@ -57,14 +58,14 @@ paths:
       tags:
         - Security
       summary: Tell who you are using firebase token
-      operationId: whoami
+      operationId: getWhoAmi
       responses:
         '200':
           description: Who you are
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Whoami'
+                $ref: '#/components/schemas/User'
         '400':
           $ref: '#/components/responses/BadRequest'
         '403':
@@ -76,18 +77,23 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
   '/signup':
-    get:
+    post:
       tags:
         - Security
       summary: create a account using email, lastName and password
-      operationId: signup
+      operationId: doSignup
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUser'
       responses:
         '200':
           description: Register a new user account.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/signup'
+                $ref: '#/components/schemas/User'
         '400':
           $ref: '#/components/responses/BadRequest'
         '403':
@@ -98,8 +104,6 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-
-
 components:
   securitySchemes:
     BearerAuth:
@@ -114,31 +118,24 @@ components:
           format: uuid
         name:
           type: string
-
-    Whoami:
+    User:
       properties:
         id:
           type: string
           format: uuid
-        first_name:
+        firstName:
           type: string
           example: mioratiana
-        last_name:
+        lastName:
           type: string
           example: TSANTANIAINA
         email:
           type: string
           example: hei.tsantaniaina@gmail.com
-    signup:
+    CreateUser:
+      allOf:
+        - $ref: '#/components/schemas/User'
       properties:
-        id:
-          type: string
-        last_name:
-          type: string
-          example: TSANTANIAINA
-        email:
-          type: string
-          example: hei.tsantaniana@gmail.com
         password:
           type: string
   responses:
@@ -148,28 +145,24 @@ components:
         application/json:
           example:
             error: "Invalid request parameters"
-
     Forbidden:
       description: Forbidden
       content:
         application/json:
           example:
             error: "Access forbidden"
-
     NotFound:
       description: Not Found
       content:
         application/json:
           example:
             error: "Resource not found"
-
     TooManyRequests:
       description: Too Many Requests
       content:
         application/json:
           example:
             error: "Too many requests, please try again later"
-
     InternalServerError:
       description: Internal Server Error
       content:
