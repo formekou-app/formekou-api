@@ -32,7 +32,7 @@ for migration_file in $(ls "$FDB_MIGRATION_PATH" | grep -Eo "V[0-9]+.*\.sql" | s
     if [ "$version" = "$latest_version" ]; then
         full_path="$FDB_MIGRATION_PATH/$migration_file"
         
-        echo "[ LOG ]: Executing migration script: $migration_file\n"
+        echo "[ LOG ]: Executing migration script: $migration_file"
         psql -U "$FDB_USER" -p "$FDB_PORT" -h "$FDB_HOST" -d "$FDB_NAME" -f "$full_path"
     fi
 done

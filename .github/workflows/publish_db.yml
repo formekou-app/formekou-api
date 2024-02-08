@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  style:
+  run-migrations:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
