@@ -1,0 +1,23 @@
+name: Publish DB Preprod 
+
+on:
+  push:
+    branches: ["preprod"]
+  workflow_dispatch:
+
+jobs:
+  run-migrations:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Execute publish_db.sh
+        run: |
+          chmod +x publish_db.sh
+          ./publish_db.sh ${{ secrets.DB_USERNAME_PREPROD }} \
+                         ${{ secrets.DB_PASSWORD_PREPROD }} \
+                         ${{ secrets.DB_HOST_PREPROD }} \
+                         ${{ secrets.DB_PORT_PREPROD }} \
+                         ${{ secrets.DB_NAME_PREPROD }} \
+                         ${{ secrets.MIGRATION_PATH_PREPROD }}
