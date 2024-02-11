@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.io.ByteArrayInputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
 
 @Configuration
@@ -17,7 +16,6 @@ public class FirebaseConf {
     public FirebaseAuth firebaseApp() throws IOException {
         String firebaseKey = System.getenv("FIREBASE_KEY");
         var stream = new ByteArrayInputStream(firebaseKey.getBytes());
-
         FirebaseOptions options = new FirebaseOptions.Builder()
                 .setCredentials(GoogleCredentials.fromStream(stream))
                 .build();
