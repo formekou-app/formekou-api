@@ -1,11 +1,6 @@
 package neocode.formekouapi.service;
 
-import com.google.firebase.auth.FirebaseAuthException;
-import com.google.firebase.auth.UserRecord;
 import lombok.RequiredArgsConstructor;
-import neocode.formekouapi.exception.InternalServerErrorException;
-import neocode.formekouapi.exception.UserAlreadyExistException;
-import neocode.formekouapi.model.CreateUser;
 import neocode.formekouapi.model.User;
 import neocode.formekouapi.security.FirebaseAuthentication;
 import org.springframework.stereotype.Service;
@@ -23,24 +18,7 @@ public class AuthService {
         return authentication.getUser();
     }
 
-    public User signup(CreateUser userToSave){
-        if(userToSave.getId() != null && userService.getUserById(userToSave.getId()).isPresent()){
-            throw new UserAlreadyExistException(
-                "User already exist with the email=" + userToSave.getEmail()
-            );
-        }
-
-        try {
-            UserRecord createdUser = firebaseService.createUser(userToSave);
-            userToSave.setId(createdUser.getUid());
-            return userService.saveOrUpdate(new User(
-                userToSave.getId(),
-                userToSave.getEmail(),
-                userToSave.getLastName(),
-                userToSave.getFistName()
-            ));
-        }catch (FirebaseAuthException error){
-            throw new InternalServerErrorException();
-        }
+    public User signup(User userToSave){
+        return userService.saveOrUpdate(userToSave);
     }
 }
