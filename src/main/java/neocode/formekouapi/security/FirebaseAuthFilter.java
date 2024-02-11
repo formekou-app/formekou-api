@@ -46,7 +46,7 @@ public class FirebaseAuthFilter extends OncePerRequestFilter {
                     user.orElse(new User(
                             firebaseToken.getUid(),
                             firebaseToken.getEmail(),
-                            firebaseToken.getName(),
+                            firebaseToken.getName() != null ? firebaseToken.getName() :  "",
                             null
                     )),
                     token,
