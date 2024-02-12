@@ -3,33 +3,12 @@ info:
   version: 1.0.0
   title: formekou-api
   description: Api that can manage forms
+servers:
+  - url: https://formekou-api-production.up.railway.app
 security:
   - BearerAuth: []
 paths:
-  '/dummy-table':
-    get:
-      tags:
-        - Health
-      summary: Get all dummies
-      operationId: getDummies
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Dummy'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '429':
-          $ref: '#/components/responses/TooManyRequests'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-  '/ping':
+  /ping:
     get:
       tags:
         - Health
@@ -53,7 +32,30 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  '/whoami':
+  /dummy-table:
+    get:
+      tags:
+        - Health
+      summary: Get all dummies
+      operationId: getDummies
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dummy'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /whoami:
     get:
       tags:
         - Security
@@ -76,17 +78,17 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  '/signup':
+  /signup:
     post:
       tags:
         - Security
-      summary: create a account using email, lastName and password
-      operationId: doSignup
+      summary: Create an account which is registered on firebase
+      operationId: signup
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateUser'
+              $ref: '#/components/schemas/User'
       responses:
         '200':
           description: Register a new user account.
@@ -104,20 +106,195 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
+  /users/{userId}/forms:
+    get:
+      tags:
+        - Forms
+      summary: Get All forms for a specified user
+      operationId: getFormsByUser
+      parameters:
+        - $ref: "#/components/parameters/UserIdParam"
+      responses:
+        '200':
+          description: List of forms for the user.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Form'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /forms/{formId}:
+    get:
+      tags:
+        - Forms
+      summary: Get one form using id
+      operationId: getFormById
+      parameters:
+        - $ref: "#/components/parameters/FormIdParam"
+      responses:
+        '200':
+          description: One form which has the specified id.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Form'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+    put:
+      tags:
+        - Forms
+      summary: Create or Update forms
+      operationId: crupdateForms
+      parameters:
+        - $ref: "#/components/parameters/FormIdParam"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateForm'
+      responses:
+        '200':
+          description: The form that was crupdated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Form'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /forms/{formId}/questions:
+    put:
+      tags:
+        - Forms
+      summary: Create or Update forms's questions
+      operationId: crupdateFormsQuestions
+      parameters:
+        - $ref: "#/components/parameters/FormIdParam"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Question'
+      responses:
+        '200':
+          description: The form that was crupdated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Form'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
 components:
   securitySchemes:
     BearerAuth:
       type: http
       scheme: bearer
   schemas:
-    Dummy:
+    QuestionType:
+      type: string
+      enum:
+        - TEXT
+        - NUMBER
+        - CHECKBOX
+        - RADIO
+        - PARAGRAPH
+    Option:
+      type: object
+      properties:
+        id:
+          type: string
+        value:
+          type: string
+        isCorrect:
+          type: boolean
+        points:
+          type: number
+    Question:
       type: object
       properties:
         id:
           type: string
           format: uuid
-        name:
+        title:
           type: string
+        description:
+          type: string
+        points:
+          type: number
+        isRequired:
+          type: boolean
+        options:
+          type: array
+          items:
+            $ref: "#/components/schemas/Option"
+    CreateForm:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        description:
+          type: string
+        color:
+          type: string
+          example: "#f3f3f3"
+        openedAt:
+          type: string
+          format: date-time
+        closedAt:
+          type: string
+          format: date-time
+        isPrivate:
+          type: boolean
+        allowMultipleResponse:
+          type: boolean
+    Form:
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/CreateForm"
+      properties:
+        questions:
+          type: array
+          items:
+            $ref: "#/components/schemas/Question"
     User:
       properties:
         id:
@@ -132,12 +309,29 @@ components:
         email:
           type: string
           example: hei.tsantaniaina@gmail.com
-    CreateUser:
-      allOf:
-        - $ref: '#/components/schemas/User'
+    Dummy:
+      type: object
       properties:
-        password:
+        id:
           type: string
+          format: uuid
+        name:
+          type: string
+  parameters:
+    FormIdParam:
+      in: path
+      name: formId
+      description: Id the form
+      required: true
+      schema:
+        type: string
+    UserIdParam:
+      in: path
+      name: userId
+      description: Id the user
+      required: true
+      schema:
+        type: string
   responses:
     BadRequest:
       description: Bad Request
