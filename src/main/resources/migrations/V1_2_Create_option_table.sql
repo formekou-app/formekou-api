@@ -1,4 +1,4 @@
-create table if not exists "question"(
+create table if not exists "option"(
     id varchar(255) primary key,
     value text not null,
     is_correct bool default false not null,
