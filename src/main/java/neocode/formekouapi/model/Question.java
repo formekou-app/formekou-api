@@ -32,10 +32,10 @@ public class Question {
     @Enumerated(EnumType.STRING)
     private QuestionType type;
 
-    @OneToMany(targetEntity = "\"option\"")
+    @OneToMany(targetEntity = Option.class)
     private List<Option> options;
 
-    @ManyToOne(targetEntity = "\"form\"")
+    @ManyToOne(targetEntity = Form.class)
     @JoinColumn(name = "id_form")
     private Form form;
 }

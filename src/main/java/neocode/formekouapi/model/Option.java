@@ -25,7 +25,7 @@ public class Option implements Serializable {
     @Column
     private int points;
 
-    @ManyToOne(targetEntity = "\"question\"")
+    @ManyToOne(targetEntity = Question.class)
     @JoinColumn(name = "id_question")
     private Question question;
 }

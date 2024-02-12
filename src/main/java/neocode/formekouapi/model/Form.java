@@ -42,6 +42,6 @@ public class Form implements Serializable {
     @Column
     private String color;
 
-    @OneToMany(targetEntity = "\"question\"")
+    @OneToMany(targetEntity = Question.class)
     private List<Question> questions;
 }
