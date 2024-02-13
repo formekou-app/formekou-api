@@ -1,17 +1,21 @@
 package neocode.formekouapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+import java.io.Serializable;
 import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-@Entity(name = "\"question\"")
-public class Question {
+@Getter
+@Setter
+@ToString
+@EqualsAndHashCode
+@Entity(name = "question")
+public class Question implements Serializable {
     @Id
     @Column
     private String id;
@@ -25,6 +29,7 @@ public class Question {
     @Column
     private int points;
 
+    @JsonProperty("isRequired")
     @Column(name = "is_required")
     private boolean isRequired;
 
@@ -32,10 +37,11 @@ public class Question {
     @Enumerated(EnumType.STRING)
     private QuestionType type;
 
-    @OneToMany(targetEntity = Option.class)
+    @OneToMany(mappedBy = "question")
     private List<Option> options;
 
-    @ManyToOne(targetEntity = Form.class)
-    @JoinColumn(name = "id_form")
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "id_form", nullable = false)
     private Form form;
 }

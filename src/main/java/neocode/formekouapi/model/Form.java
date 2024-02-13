@@ -1,21 +1,24 @@
 package neocode.formekouapi.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.List;
 
-@Entity(name = "\"form\"")
+@Entity(name = "form")
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
+@ToString
+@Builder
+@EqualsAndHashCode
 public class Form implements Serializable {
     @Id
     @Column
@@ -27,6 +30,7 @@ public class Form implements Serializable {
     @Column
     private String description;
 
+    @JsonProperty("isPrivate")
     @Column(name = "is_private", nullable = false)
     private boolean isPrivate;
 
@@ -36,12 +40,12 @@ public class Form implements Serializable {
     @Column(name = "closed_at", nullable = false)
     private Instant closedAt;
 
-    @Column(name = "allow_multiple_choice", nullable = false)
+    @Column(name = "allow_multiple_response", nullable = false)
     private boolean allowMultipleChoice;
 
     @Column
     private String color;
 
-    @OneToMany(targetEntity = Question.class)
+    @OneToMany(mappedBy = "form")
     private List<Question> questions;
 }

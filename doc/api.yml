@@ -106,23 +106,24 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /users/{userId}/forms:
-    get:
+  /forms:
+    put:
       tags:
         - Forms
-      summary: Get All forms for a specified user
-      operationId: getFormsByUser
-      parameters:
-        - $ref: "#/components/parameters/UserIdParam"
+      summary: Create or Update forms
+      operationId: crupdateForms
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateForm'
       responses:
         '200':
-          description: List of forms for the user.
+          description: The form that was crupdated
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Form'
+                $ref: '#/components/schemas/Form'
         '400':
           $ref: '#/components/responses/BadRequest'
         '403':
@@ -158,26 +159,23 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-
-    put:
+  /users/{userId}/forms:
+    get:
       tags:
         - Forms
-      summary: Create or Update forms
-      operationId: crupdateForms
+      summary: Get All forms for a specified user
+      operationId: getFormsByUser
       parameters:
-        - $ref: "#/components/parameters/FormIdParam"
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateForm'
+        - $ref: "#/components/parameters/UserIdParam"
       responses:
         '200':
-          description: The form that was crupdated
+          description: List of forms for the user.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Form'
+                type: array
+                items:
+                  $ref: '#/components/schemas/Form'
         '400':
           $ref: '#/components/responses/BadRequest'
         '403':
