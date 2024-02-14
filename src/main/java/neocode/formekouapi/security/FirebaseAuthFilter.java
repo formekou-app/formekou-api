@@ -1,5 +1,7 @@
 package neocode.formekouapi.security;
 
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.FirebaseToken;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -36,17 +38,27 @@ public class FirebaseAuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException
     {
-        //String token = FirebaseAuthFilter.getFirebaseToken(request);
-        //FirebaseToken firebaseToken =  firebaseService.getFirebaseUserByToken(token);
-        Optional<User> user = userService.getUserById("1");
-        FirebaseAuthentication authentication = new FirebaseAuthentication(
-                user.orElse(null),
-                null,
-                user.isPresent()
-        );
+        String token = FirebaseAuthFilter.getFirebaseToken(request);
+        try {
+            FirebaseToken firebaseToken =  firebaseService.getFirebaseUserByToken(token);
+            Optional<User> user = userService.getUserById(firebaseToken.getUid());
+            FirebaseAuthentication authentication = new FirebaseAuthentication(
+                    user.orElse(User.builder()
+                            .id(firebaseToken.getUid())
+                            .profilePicture(firebaseToken.getPicture())
+                            .email(firebaseToken.getEmail())
+                            .lastName(firebaseToken.getName() == null ? firebaseToken.getEmail() : firebaseToken.getName())
+                            .build()
+                    ),
+                    token,
+                    user.isPresent()
+            );
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        filterChain.doFilter(request,response);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            filterChain.doFilter(request,response);
+        } catch (FirebaseAuthException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

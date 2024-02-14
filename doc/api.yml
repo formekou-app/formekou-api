@@ -78,12 +78,65 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
+  /users:
+    put:
+      tags:
+        - Users
+      summary: Update your profile
+      operationId: updateProfile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: Your profile which have been updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /users/{userId}:
+    get:
+      tags:
+        - Users
+      summary: get one user by id
+      operationId: getUserById
+      parameters:
+        - $ref: "#/components/parameters/UserIdParam"
+      responses:
+        '200':
+          description: Users which have the given id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
   /forms:
     put:
       tags:
         - Forms
       summary: Create or Update forms
-      operationId: crupdateForms
+      operationId: crupdateForm
       requestBody:
         content:
           application/json:
@@ -136,7 +189,7 @@ paths:
       tags:
         - Forms
       summary: Get All forms for a specified user
-      operationId: getFormsByUser
+      operationId: getFormByUserId
       parameters:
         - $ref: "#/components/parameters/UserIdParam"
       responses:
@@ -163,7 +216,7 @@ paths:
       tags:
         - Forms
       summary: Create or Update forms's questions
-      operationId: crupdateFormsQuestions
+      operationId: crupdateFormQuestions
       parameters:
         - $ref: "#/components/parameters/FormIdParam"
       requestBody:
@@ -281,6 +334,9 @@ components:
         email:
           type: string
           example: hei.tsantaniaina@gmail.com
+        profilePicture:
+          type: string
+          example: https://foo_url.com
     Dummy:
       type: object
       properties:

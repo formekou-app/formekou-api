@@ -5,10 +5,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.List;
@@ -17,21 +14,23 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class User implements Serializable {
     @Id
     @Column
     private String id;
 
-    @NonNull
     @Column(nullable = false)
     private String email;
 
-    @NonNull
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
     @Column(name="first_name")
-    private String fistName;
+    private String firstName;
+
+    @Column(name = "profile_picture")
+    private String profilePicture;
 
     @JsonIgnore
     @OneToMany(mappedBy = "user")
