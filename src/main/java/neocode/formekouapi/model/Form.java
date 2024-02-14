@@ -1,10 +1,8 @@
 package neocode.formekouapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
@@ -37,7 +35,7 @@ public class Form implements Serializable {
     @Column(name = "opened_at", nullable = false)
     private Instant openedAt;
 
-    @Column(name = "closed_at", nullable = false)
+    @Column(name = "closed_at")
     private Instant closedAt;
 
     @Column(name = "allow_multiple_response", nullable = false)
@@ -48,4 +46,9 @@ public class Form implements Serializable {
 
     @OneToMany(mappedBy = "form")
     private List<Question> questions;
+
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "id_user", nullable = false)
+    private User user;
 }

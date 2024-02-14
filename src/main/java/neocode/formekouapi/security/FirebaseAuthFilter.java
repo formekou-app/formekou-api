@@ -1,7 +1,5 @@
 package neocode.formekouapi.security;
 
-import com.google.firebase.auth.FirebaseAuthException;
-import com.google.firebase.auth.FirebaseToken;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -38,27 +36,16 @@ public class FirebaseAuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException
     {
-        String token = FirebaseAuthFilter.getFirebaseToken(request);
-        try{
-            FirebaseToken firebaseToken =  firebaseService.getFirebaseUserByToken(token);
-            Optional<User> user = userService.getUserById(firebaseToken.getUid());
-            FirebaseAuthentication authentication = new FirebaseAuthentication(
-                    user.orElse(new User(
-                            firebaseToken.getUid(),
-                            firebaseToken.getEmail(),
-                            firebaseToken.getName() != null ? firebaseToken.getName() :  "",
-                            null
-                    )),
-                    token,
-                    user.isPresent()
-            );
+        //String token = FirebaseAuthFilter.getFirebaseToken(request);
+        //FirebaseToken firebaseToken =  firebaseService.getFirebaseUserByToken(token);
+        Optional<User> user = userService.getUserById("1");
+        FirebaseAuthentication authentication = new FirebaseAuthentication(
+                user.orElse(null),
+                null,
+                user.isPresent()
+        );
 
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-        }catch(FirebaseAuthException error){
-            //TODO: handle too
-            throw new AccessDeniedException();
-        }
-
+        SecurityContextHolder.getContext().setAuthentication(authentication);
         filterChain.doFilter(request,response);
     }
 

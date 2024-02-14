@@ -1,14 +1,17 @@
 package neocode.formekouapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Entity(name="\"user\"")
 @Data
@@ -29,4 +32,8 @@ public class User implements Serializable {
 
     @Column(name="first_name")
     private String fistName;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user")
+    private List<Form> forms;
 }

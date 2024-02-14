@@ -1,4 +1,4 @@
-package neocode.formekouapi.controller;
+package neocode.formekouapi.endpoint.rest.controller;
 
 import lombok.RequiredArgsConstructor;
 import neocode.formekouapi.model.User;
@@ -14,15 +14,5 @@ public class AuthController {
     @GetMapping("/whoami")
     public User whoami(FirebaseAuthentication authentication){
         return authService.getWhoAmi(authentication);
-    }
-
-    @PostMapping("/signup")
-    public User signup(FirebaseAuthentication authentication, @RequestBody User userToSave){
-        return authService.signup(new User(
-                authentication.getUser().getId(),
-                authentication.getUser().getEmail(),
-                userToSave.getLastName(),
-                null
-        ));
     }
 }

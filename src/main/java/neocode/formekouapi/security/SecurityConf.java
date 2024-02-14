@@ -44,7 +44,10 @@ public class SecurityConf {
                         new OrRequestMatcher(
                                 new AntPathRequestMatcher("/ping"),
                                 new AntPathRequestMatcher("/dummy-table"),
-                                new AntPathRequestMatcher("/forms")
+                                new AntPathRequestMatcher("/users/*"),
+
+                                //TODO: make auth for the next endpoint
+                                new AntPathRequestMatcher("/users/*/forms")
                         )),
                         UsernamePasswordAuthenticationFilter.class
                 )
@@ -54,13 +57,19 @@ public class SecurityConf {
                         .permitAll()
                         .requestMatchers("/dummy-table")
                         .permitAll()
+                        .requestMatchers("/users/*")
+                        .permitAll()
+
+                        // authenticated
                         .requestMatchers("/signup")
                         .authenticated()
-                        .requestMatchers("/forms")
-                        .permitAll()
                         .requestMatchers("/whoami")
                         .authenticated()
                         .requestMatchers("/users")
+                        .authenticated()
+                        .requestMatchers("/users/*/forms")
+                        .permitAll()
+                        .requestMatchers("/forms")
                         .authenticated()
                 );
         return http.build();
