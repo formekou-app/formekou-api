@@ -35,9 +35,13 @@ public class SecurityConf {
                 .logout(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer
-                        .configurationSource( request ->
-                            new CorsConfiguration().applyPermitDefaultValues()
-                        )
+                        .configurationSource( request -> {
+                            CorsConfiguration configuration = new CorsConfiguration();
+                            configuration.addAllowedHeader("*");
+                            configuration.addAllowedMethod("*");
+                            configuration.addAllowedOrigin("*");
+                            return configuration;
+                        })
                 )
                 .authenticationProvider(authProvider)
                 // not authenticated
