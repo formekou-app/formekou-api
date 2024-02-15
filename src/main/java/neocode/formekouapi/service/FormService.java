@@ -2,6 +2,7 @@ package neocode.formekouapi.service;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import neocode.formekouapi.exception.NotFoundException;
 import neocode.formekouapi.model.Form;
 import neocode.formekouapi.repository.FormRepository;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,17 @@ public class FormService {
         return formRepository.findAllByUserId(userId);
     }
 
+    public List<Form> getOwnForms(){
+        return getAllByUserId(AuthService.getAuthentication().getUser().getId());
+    }
+
+    //TODO: manage access
+    public Form getFormById(String formId){
+        return formRepository.findById(formId).orElseThrow(NotFoundException::new);
+    }
+
     public Form crupdateForm(Form formToSave){
+        formToSave.setUser(AuthService.getAuthentication().getUser());
         return formRepository.save(formToSave);
     }
 }

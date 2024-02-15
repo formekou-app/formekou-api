@@ -132,6 +132,33 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
   /forms:
+    get:
+      tags:
+        - Forms
+      summary: Get own forms
+      operationId: getOwnForms
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Form'
+      responses:
+        '200':
+          description: All your forms
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Form'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
     put:
       tags:
         - Forms
@@ -174,33 +201,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Form'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '429':
-          $ref: '#/components/responses/TooManyRequests'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-  /users/{userId}/forms:
-    get:
-      tags:
-        - Forms
-      summary: Get All forms for a specified user
-      operationId: getFormByUserId
-      parameters:
-        - $ref: "#/components/parameters/UserIdParam"
-      responses:
-        '200':
-          description: List of forms for the user.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Form'
         '400':
           $ref: '#/components/responses/BadRequest'
         '403':
