@@ -39,27 +39,26 @@ public class FirebaseAuthFilter extends OncePerRequestFilter {
             throws ServletException, IOException
     {
         String token = FirebaseAuthFilter.getFirebaseToken(request);
-        try{
+        try {
             FirebaseToken firebaseToken =  firebaseService.getFirebaseUserByToken(token);
             Optional<User> user = userService.getUserById(firebaseToken.getUid());
             FirebaseAuthentication authentication = new FirebaseAuthentication(
-                    user.orElse(new User(
-                            firebaseToken.getUid(),
-                            firebaseToken.getEmail(),
-                            firebaseToken.getName() != null ? firebaseToken.getName() :  "",
-                            null
-                    )),
+                    user.orElse(User.builder()
+                            .id(firebaseToken.getUid())
+                            .profilePicture(firebaseToken.getPicture())
+                            .email(firebaseToken.getEmail())
+                            .lastName(firebaseToken.getName() == null ? firebaseToken.getEmail() : firebaseToken.getName())
+                            .build()
+                    ),
                     token,
                     user.isPresent()
             );
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
-        }catch(FirebaseAuthException error){
-            //TODO: handle too
-            throw new AccessDeniedException();
+            filterChain.doFilter(request,response);
+        } catch (FirebaseAuthException e) {
+            throw new RuntimeException(e);
         }
-
-        filterChain.doFilter(request,response);
     }
 
     @Override

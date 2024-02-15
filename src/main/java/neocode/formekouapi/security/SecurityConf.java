@@ -19,9 +19,9 @@ import org.springframework.web.cors.CorsConfiguration;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConf {
-    private final FirebaseAuthProvider firebaseAuthProvider;
     private final FirebaseService firebaseService;
     private final UserService userService;
+    private final AuthProvider authProvider;
 
     public FirebaseAuthFilter configureFilter(RequestMatcher matcher){
         return new FirebaseAuthFilter(firebaseService, userService, matcher);
@@ -35,26 +35,33 @@ public class SecurityConf {
                 .logout(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer
-                        .configurationSource( request ->
-                            new CorsConfiguration().applyPermitDefaultValues()
-                        )
+                        .configurationSource( request -> {
+                            CorsConfiguration configuration = new CorsConfiguration();
+                            configuration.addAllowedHeader("*");
+                            configuration.addAllowedMethod("*");
+                            configuration.addAllowedOrigin("*");
+                            return configuration;
+                        })
                 )
-                //authenticated
+                .authenticationProvider(authProvider)
+                // not authenticated
                 .addFilterBefore(configureFilter(
                         new OrRequestMatcher(
                                 new AntPathRequestMatcher("/ping"),
-                                new AntPathRequestMatcher("/dummy-table")
+                                new AntPathRequestMatcher("/dummy-table"),
+                                new AntPathRequestMatcher("/users/*")
                         )),
                         UsernamePasswordAuthenticationFilter.class
                 )
-                .authenticationProvider(firebaseAuthProvider)
                 .authorizeHttpRequests(auth-> auth
                         .requestMatchers("/ping")
                         .permitAll()
                         .requestMatchers("/dummy-table")
                         .permitAll()
-                        .requestMatchers("/signup")
-                        .authenticated()
+                        .requestMatchers("/users/*")
+                        .permitAll()
+
+                        // authenticated
                         .requestMatchers("/whoami")
                         .authenticated()
                         .requestMatchers("/users")
