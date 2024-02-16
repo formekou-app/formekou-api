@@ -35,8 +35,7 @@ public class Question implements Serializable {
     private boolean isRequired;
 
     @Column
-    @Enumerated(EnumType.STRING)
-    private QuestionType type;
+    private String type;
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
     private List<Option> options;

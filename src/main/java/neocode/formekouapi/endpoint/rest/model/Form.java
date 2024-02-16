@@ -3,7 +3,6 @@ package neocode.formekouapi.endpoint.rest.model;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import neocode.formekouapi.model.Question;
 
 import java.time.Instant;
 import java.util.List;

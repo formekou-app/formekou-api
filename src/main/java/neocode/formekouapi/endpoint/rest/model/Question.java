@@ -2,7 +2,6 @@ package neocode.formekouapi.endpoint.rest.model;
 
 import lombok.Builder;
 import lombok.Data;
-import neocode.formekouapi.model.Option;
 import neocode.formekouapi.model.QuestionType;
 
 import java.io.Serializable;
