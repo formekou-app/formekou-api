@@ -22,6 +22,7 @@ public class CreateFormMapper implements Serializable {
                 .isPrivate(form.isPrivate())
                 .openedAt(form.getOpenedAt())
                 .closedAt(form.getClosedAt())
+                .createdAt(form.getCreatedAt())
                 .allowMultipleChoice(form.isAllowMultipleChoice())
                 .color(form.getColor())
                 .build();

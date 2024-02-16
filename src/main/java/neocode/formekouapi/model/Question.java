@@ -14,6 +14,7 @@ import java.util.List;
 @Setter
 @ToString
 @EqualsAndHashCode
+@Builder
 @Entity(name = "question")
 public class Question implements Serializable {
     @Id
@@ -37,7 +38,7 @@ public class Question implements Serializable {
     @Enumerated(EnumType.STRING)
     private QuestionType type;
 
-    @OneToMany(mappedBy = "question")
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
     private List<Option> options;
 
     @JsonIgnore

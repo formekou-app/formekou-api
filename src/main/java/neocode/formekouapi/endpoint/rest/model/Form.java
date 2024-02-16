@@ -20,5 +20,6 @@ public class Form {
     private Instant closedAt;
     private boolean allowMultipleChoice;
     private String color;
+    private Instant createdAt;
     private List<Question> questions;
 }

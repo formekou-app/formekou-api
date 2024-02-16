@@ -11,6 +11,7 @@ public class FormMapper {
                 .title(form.getTitle())
                 .description(form.getDescription())
                 .isPrivate(form.isPrivate())
+                .createdAt(form.getCreatedAt())
                 .openedAt(form.getOpenedAt())
                 .closedAt(form.getClosedAt())
                 .allowMultipleChoice(form.isAllowMultipleChoice())
@@ -26,6 +27,7 @@ public class FormMapper {
                 .isPrivate(form.isPrivate())
                 .openedAt(form.getOpenedAt())
                 .closedAt(form.getClosedAt())
+                .createdAt(form.getCreatedAt())
                 .allowMultipleChoice(form.isAllowMultipleChoice())
                 .color(form.getColor())
                 .build();

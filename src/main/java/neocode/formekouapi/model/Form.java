@@ -44,7 +44,10 @@ public class Form implements Serializable {
     @Column
     private String color;
 
-    @OneToMany(mappedBy = "form")
+    @Column(name = "created_at")
+    private Instant createdAt;
+
+    @OneToMany(mappedBy = "form", cascade = CascadeType.ALL)
     private List<Question> questions;
 
     @JsonIgnore
