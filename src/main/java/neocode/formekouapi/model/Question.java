@@ -14,6 +14,7 @@ import java.util.List;
 @Setter
 @ToString
 @EqualsAndHashCode
+@Builder
 @Entity(name = "question")
 public class Question implements Serializable {
     @Id
@@ -34,10 +35,9 @@ public class Question implements Serializable {
     private boolean isRequired;
 
     @Column
-    @Enumerated(EnumType.STRING)
-    private QuestionType type;
+    private String type;
 
-    @OneToMany(mappedBy = "question")
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
     private List<Option> options;
 
     @JsonIgnore

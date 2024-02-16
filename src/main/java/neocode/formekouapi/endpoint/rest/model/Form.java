@@ -3,7 +3,6 @@ package neocode.formekouapi.endpoint.rest.model;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import neocode.formekouapi.model.Question;
 
 import java.time.Instant;
 import java.util.List;
@@ -20,5 +19,6 @@ public class Form {
     private Instant closedAt;
     private boolean allowMultipleChoice;
     private String color;
+    private Instant createdAt;
     private List<Question> questions;
 }

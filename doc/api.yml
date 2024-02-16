@@ -307,6 +307,9 @@ components:
         closedAt:
           type: string
           format: date-time
+        createdAt:
+          type: string
+          format: date-time
         isPrivate:
           type: boolean
         allowMultipleResponse:

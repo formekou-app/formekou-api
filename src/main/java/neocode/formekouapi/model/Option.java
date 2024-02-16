@@ -1,7 +1,5 @@
 package neocode.formekouapi.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,15 +21,13 @@ public class Option implements Serializable {
     @Column
     private String value;
 
-    @JsonProperty("isCorrect")
     @Column(name = "is_correct")
     private boolean isCorrect;
 
     @Column
     private int points;
 
-    @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "id_question", nullable = false)
+    @JoinColumn(name = "id_question")
     private Question question;
 }

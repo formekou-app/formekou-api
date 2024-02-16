@@ -43,7 +43,6 @@ public class SecurityConf {
                             return configuration;
                         })
                 )
-                .authenticationProvider(authProvider)
                 // not authenticated
                 .addFilterBefore(configureFilter(
                         new OrRequestMatcher(
@@ -53,6 +52,7 @@ public class SecurityConf {
                         )),
                         UsernamePasswordAuthenticationFilter.class
                 )
+                .authenticationProvider(authProvider)
                 .authorizeHttpRequests(auth-> auth
                         .requestMatchers("/ping")
                         .permitAll()
@@ -65,6 +65,12 @@ public class SecurityConf {
                         .requestMatchers("/whoami")
                         .authenticated()
                         .requestMatchers("/users")
+                        .authenticated()
+                        .requestMatchers("/forms")
+                        .authenticated()
+                        .requestMatchers("/forms/*")
+                        .authenticated()
+                        .requestMatchers("/forms/*/questions")
                         .authenticated()
                 );
         return http.build();

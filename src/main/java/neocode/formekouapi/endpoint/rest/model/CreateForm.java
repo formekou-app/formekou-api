@@ -19,6 +19,7 @@ public class CreateForm implements Serializable {
     private boolean isPrivate;
     private Instant openedAt;
     private Instant closedAt;
+    private Instant createdAt;
     private boolean allowMultipleChoice;
 
     @NonNull
