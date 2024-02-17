@@ -18,6 +18,7 @@ public class FormMapper {
                 .createdAt(form.getCreatedAt())
                 .openedAt(form.getOpenedAt())
                 .closedAt(form.getClosedAt())
+                .updatedAt(form.getUpdatedAt())
                 .allowMultipleChoice(form.isAllowMultipleChoice())
                 .color(form.getColor())
                 .questions(
@@ -37,6 +38,7 @@ public class FormMapper {
                 .openedAt(form.getOpenedAt())
                 .closedAt(form.getClosedAt())
                 .createdAt(form.getCreatedAt())
+                .updatedAt(form.getUpdatedAt())
                 .allowMultipleChoice(form.isAllowMultipleChoice())
                 .color(form.getColor())
                 .build();

@@ -1,5 +1,6 @@
 package neocode.formekouapi.endpoint.rest.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
 import neocode.formekouapi.model.QuestionType;
@@ -14,7 +15,10 @@ public class Question implements Serializable {
     private String title;
     private String description;
     private int points;
-    private boolean isRequired;
     private QuestionType type;
     private List<Option> options;
+
+    @JsonProperty("isRequired")
+    private boolean isRequired;
+
 }
