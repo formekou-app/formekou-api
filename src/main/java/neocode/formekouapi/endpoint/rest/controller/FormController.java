@@ -20,13 +20,20 @@ public class FormController {
     private final FormMapper formMapper;
 
     @GetMapping("/forms")
-    public List<Form> getOwnForms(){
-        return formService.getOwnForms().stream().map(formMapper::toRest).toList();
+    public List<Form> getOwnForms(
+            @RequestParam(name = "sort", defaultValue = "updatedAt") String sort
+    ){
+        return formService.getOwnForms(sort).stream().map(formMapper::toRest).toList();
     }
 
     @GetMapping("/forms/{formId}")
     public Form getFormById(@PathVariable String formId){
         return formMapper.toRest(formService.getFormById(formId));
+    }
+
+    @DeleteMapping("/forms/{formId}")
+    public Form deleteFormById(@PathVariable String formId) {
+        return formMapper.toRest(formService.deleteById(formId));
     }
 
     @PutMapping("/forms")

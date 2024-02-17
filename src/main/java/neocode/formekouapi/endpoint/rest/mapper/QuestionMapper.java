@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 @AllArgsConstructor
 public class QuestionMapper {
-    private final CreateFormMapper.OptionMapper optionMapper;
+    private final OptionMapper optionMapper;
 
     public Question toRest(neocode.formekouapi.model.Question question){
         return Question.builder()

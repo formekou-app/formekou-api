@@ -47,6 +47,9 @@ public class Form implements Serializable {
     @Column(name = "created_at")
     private Instant createdAt;
 
+    @Column(name = "updated_at")
+    private Instant updatedAt;
+
     @OneToMany(mappedBy = "form", cascade = CascadeType.ALL)
     private List<Question> questions;
 

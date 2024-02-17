@@ -136,6 +136,13 @@ paths:
       tags:
         - Forms
       summary: Get own forms
+      parameters:
+        - in: query
+          name: sort
+          required: false
+          schema:
+            type: string
+            description: How to sort the data
       operationId: getOwnForms
       requestBody:
         content:
@@ -197,6 +204,30 @@ paths:
       responses:
         '200':
           description: One form which has the specified id.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Form'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      tags:
+        - Forms
+      summary: Delete one form using id
+      operationId: deleteFormById
+      parameters:
+        - $ref: "#/components/parameters/FormIdParam"
+      responses:
+        '200':
+          description: One form which has been deleted
           content:
             application/json:
               schema:
@@ -308,6 +339,9 @@ components:
           type: string
           format: date-time
         createdAt:
+          type: string
+          format: date-time
+        updatedAt:
           type: string
           format: date-time
         isPrivate:
