@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 public class AuthService {
     private final UserService userService;
 
-    static FirebaseAuthentication getAuthentication(){
+    public static FirebaseAuthentication getAuthentication(){
         return (FirebaseAuthentication) SecurityContextHolder.getContext().getAuthentication();
     }
 

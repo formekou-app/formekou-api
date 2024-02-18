@@ -18,7 +18,7 @@ public class AnswerMapper {
                 .value(answer.getValue())
                 .createdAt(answer.getCreatedAt())
                 .updatedAt(answer.getUpdatedAt())
-                .status(AnswerStatus.valueOf(answer.getStatus()))
+                .status(AnswerStatus.valueOf(answer.getStatus() == null ? "UNKNOWN" : answer.getStatus()))
                 .user(userMapper.toRest(answer.getUser()))
                 .question(questionMapper.toRest(answer.getQuestion()))
                 .build();

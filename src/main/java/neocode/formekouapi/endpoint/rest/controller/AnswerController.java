@@ -19,7 +19,7 @@ public class AnswerController {
     private final CreateAnswerMapper createAnswerMapper;
     private final AnswerService answerService;
 
-    @PutMapping("/questions/reply")
+    @PutMapping("/forms/reply")
     public List<Answer> saveAnswers(@RequestBody List<CreateAnswer> createAnswers){
         return answerService.saveAnswers(
                 createAnswers.stream().map(createAnswerMapper::toDomain).toList()

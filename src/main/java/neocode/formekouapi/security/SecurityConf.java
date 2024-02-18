@@ -72,6 +72,12 @@ public class SecurityConf {
                         .authenticated()
                         .requestMatchers("/forms/*/questions")
                         .authenticated()
+                        .requestMatchers("/forms/*/answers")
+                        .authenticated()
+                        .requestMatchers("/forms/*/can/reply")
+                        .authenticated()
+                        .requestMatchers("/forms/reply")
+                        .authenticated()
                 );
         return http.build();
     }

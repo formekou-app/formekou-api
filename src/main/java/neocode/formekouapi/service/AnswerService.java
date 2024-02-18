@@ -22,8 +22,8 @@ public class AnswerService {
     public boolean canIRespond(String formId){
         Form form = formService.getFormById(formId);
         String userId = AuthService.getAuthentication().getUser().getId();
-        boolean alreadyReply = answerRepository.findAllByUserIdAndQuestionFormId(userId, form.getId()).isEmpty();
-        return !(form.isAllowMultipleChoice() && alreadyReply);
+        boolean alreadyReply = !answerRepository.findAllByUserIdAndQuestionFormId(userId, form.getId()).isEmpty();
+        return form.isAllowMultipleChoice() || !alreadyReply;
     }
 
     private static boolean isValidOption(Option option, String type, String value){

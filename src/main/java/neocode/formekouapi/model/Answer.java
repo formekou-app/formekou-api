@@ -29,7 +29,10 @@ public class Answer implements Serializable {
     @Column(name = "created_at")
     private Instant createdAt;
 
+    @Transient
     private String status;
+
+    @Transient
     private int points;
 
     @ManyToOne

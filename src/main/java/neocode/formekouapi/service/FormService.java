@@ -42,7 +42,6 @@ public class FormService {
     }
 
     public Form crupdateForm(Form formToSave){
-        formToSave.setUser(AuthService.getAuthentication().getUser());
         return formRepository.save(formToSave);
     }
 }

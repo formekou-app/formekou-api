@@ -27,7 +27,7 @@ public class Question implements Serializable {
     @Column
     private String description;
 
-    @Column
+    @Column(name = "points")
     private int points;
 
     @JsonProperty("isRequired")
@@ -39,6 +39,9 @@ public class Question implements Serializable {
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
     private List<Option> options;
+
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
+    private List<Answer> answers;
 
     @JsonIgnore
     @ManyToOne

@@ -16,7 +16,5 @@ public class CreateAnswer implements Serializable {
     private String value;
     private Instant updatedAt;
     private Instant createdAt;
-    private AnswerStatus status;
     private String questionId;
-    private int points;
 }
