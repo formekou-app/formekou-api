@@ -35,4 +35,8 @@ public class User implements Serializable {
     @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<Form> forms;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user")
+    private List<Answer> answers;
 }

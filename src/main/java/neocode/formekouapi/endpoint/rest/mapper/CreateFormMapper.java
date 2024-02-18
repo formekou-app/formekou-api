@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import neocode.formekouapi.endpoint.rest.model.CreateForm;
 import neocode.formekouapi.model.Form;
+import neocode.formekouapi.service.AuthService;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
@@ -25,6 +26,7 @@ public class CreateFormMapper implements Serializable {
                 .createdAt(form.getCreatedAt())
                 .updatedAt(form.getUpdatedAt())
                 .allowMultipleChoice(form.isAllowMultipleChoice())
+                .user(AuthService.getAuthentication().getUser())
                 .color(form.getColor())
                 .build();
     }

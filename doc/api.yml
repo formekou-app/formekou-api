@@ -274,12 +274,142 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
+  /forms/reply:
+    put:
+      tags:
+        - Forms
+      summary: reply a form
+      operationId: saveAnswers
+      description: Reply a form
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAnswer'
+      responses:
+        '200':
+          description: The answer that was answer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Answer'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /forms/{formId}/answers:
+    get:
+      tags:
+        - Forms
+      operationId: getFormAnswers
+      description: Get all answer for specific form if have access
+      summary: Get all answer for specific form if have access
+      parameters:
+        - $ref: "#/components/parameters/FormIdParam"
+        - in: query
+          name: sort
+          required: false
+          schema:
+            type: string
+            description: How to sort the data
+      responses:
+        '200':
+          description: list fo the answer for the form
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Answer'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /forms/{formId}/can/reply:
+    get:
+      tags:
+        - Forms
+      operationId: canIReply
+      summary: Can i Reply to a form
+      description: Will tell you if you can replay a specific form
+      parameters:
+        - $ref: "#/components/parameters/FormIdParam"
+      responses:
+        '200':
+          description: Boolean says if you can or not
+          content:
+            application/json:
+              schema:
+                type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
 components:
   securitySchemes:
     BearerAuth:
       type: http
       scheme: bearer
   schemas:
+    BaseAnswer:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        value:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    CreateAnswer:
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/BaseAnswer"
+      properties:
+        questionId:
+          type: string
+          format: uuid
+    Answer:
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/BaseAnswer"
+      properties:
+        points:
+          type: number
+        status:
+          $ref: "#/components/schemas/AnswerStatus"
+        user:
+          $ref: "#/components/schemas/User"
+        question:
+          $ref: "#/components/schemas/Question"
+    AnswerStatus:
+      type: string
+      enum:
+        - UNKNOWN
+        - CORRECT
+        - WRONG
     QuestionType:
       type: string
       enum:
